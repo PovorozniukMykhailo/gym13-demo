@@ -5,21 +5,20 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>GYM13 — Train Beyond Limits</title>
+  <meta name="theme-color" content="#050505">
+
+  <title>GYM13 — Strength. Discipline. Progress.</title>
 
   <meta
     name="description"
-    content="GYM13 — strength, discipline and progress."
+    content="GYM13 — modern fitness club. Strength, discipline and real progress."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap"
@@ -28,10 +27,9 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- 3D MODEL -->
   <script
     type="module"
-    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
 </head>
 
@@ -40,26 +38,54 @@
 <div class="noise"></div>
 <div class="cursor-glow"></div>
 
+
 <header class="header">
 
   <a href="#home" class="brand">
     GYM<span>13</span>
   </a>
 
-  <nav class="nav">
+
+  <nav class="desktop-nav">
     <a href="#about">About</a>
     <a href="#training">Training</a>
     <a href="#contact">Contact</a>
   </nav>
 
-  <a href="#contact" class="nav-button">
-    Join GYM13
+
+  <a href="#contact" class="header-cta">
+    Join
   </a>
+
+
+  <button
+    class="menu-button"
+    id="menuButton"
+    aria-label="Open menu"
+  >
+    <span></span>
+    <span></span>
+  </button>
 
 </header>
 
 
+<div class="mobile-menu" id="mobileMenu">
+
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#training">Training</a>
+  <a href="#contact">Contact</a>
+
+  <div class="mobile-menu-footer">
+    GYM13 / FITNESS CLUB
+  </div>
+
+</div>
+
+
 <main>
+
 
 <!-- HERO -->
 
@@ -67,10 +93,11 @@
 
   <div class="hero-grid"></div>
 
-  <div class="hero-orb orb-one"></div>
-  <div class="hero-orb orb-two"></div>
+  <div class="hero-glow glow-one"></div>
+  <div class="hero-glow glow-two"></div>
 
-  <div class="hero-content reveal">
+
+  <div class="hero-copy reveal">
 
     <div class="eyebrow">
       <span></span>
@@ -85,7 +112,7 @@
 
     <p class="hero-description">
       Strength. Discipline. Progress.
-      A place created for people who want more.
+      Train beyond your limits.
     </p>
 
     <div class="hero-buttons">
@@ -100,7 +127,7 @@
 
       <a
         href="#about"
-        class="secondary-button"
+        class="simple-link"
       >
         Discover GYM13
       </a>
@@ -110,94 +137,98 @@
   </div>
 
 
-  <!-- 3D LOGO -->
+  <!-- 3D AREA -->
 
-  <div class="hero-model-area reveal">
+  <div class="hero-model reveal">
 
-    <div class="model-background"></div>
+    <div class="model-stage">
 
-    <div class="model-ring ring-a"></div>
-    <div class="model-ring ring-b"></div>
-    <div class="model-ring ring-c"></div>
+      <div class="model-halo"></div>
 
-    <div class="model-light"></div>
+      <div class="model-ring ring-one"></div>
+      <div class="model-ring ring-two"></div>
+      <div class="model-ring ring-three"></div>
 
-    <model-viewer
-      id="gymModel"
 
-      src="assets/models/gym13-logo.glb"
+      <model-viewer
+        id="gymModel"
+        src="assets/models/gym13-logo.glb"
+        alt="GYM13 3D Logo"
 
-      alt="GYM13 3D Logo"
+        auto-rotate
+        auto-rotate-delay="0"
+        rotation-per-second="10deg"
 
-      auto-rotate
+        camera-controls
+        disable-zoom
+        interaction-prompt="none"
 
-      auto-rotate-delay="0"
+        shadow-intensity="1.5"
+        shadow-softness="0.9"
 
-      rotation-per-second="14deg"
+        exposure="1.15"
 
-      camera-controls
+        environment-image="neutral"
 
-      disable-zoom
+        camera-orbit="0deg 75deg 110%"
 
-      interaction-prompt="none"
+        class="gym-model">
+      </model-viewer>
 
-      shadow-intensity="1.3"
 
-      shadow-softness="0.9"
+      <!-- FALLBACK IF GLB DOES NOT LOAD -->
 
-      exposure="1.15"
+      <div
+        class="fallback-logo"
+        id="fallbackLogo"
+      >
 
-      environment-image="neutral"
+        <div class="fallback-inner">
 
-      camera-orbit="0deg 75deg 105%"
+          <div class="fallback-top">
+            GYM
+          </div>
 
-      min-camera-orbit="auto 50deg 95%"
+          <div class="fallback-bottom">
+            13
+          </div>
 
-      max-camera-orbit="auto 100deg 120%"
+        </div>
 
-      class="gym-model">
-    </model-viewer>
+      </div>
 
-    <div class="model-caption">
-      <span></span>
-      INTERACTIVE 3D
+
+      <div class="model-caption">
+        <span></span>
+        GYM13
+      </div>
+
     </div>
 
   </div>
 
 
-  <div class="background-number">
+  <div class="hero-big-number">
     13
   </div>
 
-  <div class="scroll">
+
+  <div class="scroll-indicator">
+
     <span>SCROLL</span>
-    <div></div>
+
+    <div class="scroll-line"></div>
+
   </div>
 
 </section>
 
 
-<!-- RUNNING TEXT -->
+<!-- MARQUEE -->
 
-<section class="ticker">
+<section class="marquee">
 
-  <div class="ticker-track">
-
-    <span>STRENGTH</span>
-    <b>✦</b>
-
-    <span>DISCIPLINE</span>
-    <b>✦</b>
-
-    <span>POWER</span>
-    <b>✦</b>
-
-    <span>PROGRESS</span>
-    <b>✦</b>
-
-    <span>GYM13</span>
-    <b>✦</b>
+  <div class="marquee-track">
 
     <span>STRENGTH</span>
     <b>✦</b>
@@ -213,6 +244,20 @@
 
     <span>GYM13</span>
     <b>✦</b>
+
+    <span>STRENGTH</span>
+    <b>✦</b>
+
+    <span>DISCIPLINE</span>
+    <b>✦</b>
+
+    <span>POWER</span>
+    <b>✦</b>
+
+    <span>PROGRESS</span>
+    <b>✦</b>
+
+    <span>GYM13</span>
 
   </div>
 
@@ -221,17 +266,21 @@
 
 <!-- ABOUT -->
 
-<section class="section about" id="about">
+<section
+  class="section about"
+  id="about"
+>
 
   <div class="section-label reveal">
     01 / ABOUT
   </div>
 
+
   <div class="about-grid">
 
-    <div class="about-heading reveal">
+    <div class="reveal">
 
-      <h2>
+      <h2 class="section-title">
         MORE THAN
         <span>A GYM.</span>
       </h2>
@@ -241,16 +290,15 @@
 
     <div class="about-text reveal">
 
-      <p class="about-large">
-        GYM13 is a space for people
-        who want to become stronger
-        every single day.
+      <p class="about-lead">
+        A place for people who expect
+        more from themselves.
       </p>
 
       <p class="about-small">
         Modern equipment, focused atmosphere
-        and a community built around discipline,
-        strength and real results.
+        and training built around strength,
+        discipline and real progress.
       </p>
 
     </div>
@@ -258,17 +306,17 @@
   </div>
 
 
-  <div class="about-showcase reveal">
+  <div class="visual-card reveal">
 
-    <div class="showcase-grid"></div>
+    <div class="visual-grid"></div>
 
-    <div class="showcase-number">
+    <div class="visual-number">
       13
     </div>
 
-    <div class="showcase-light"></div>
+    <div class="visual-orange"></div>
 
-    <div class="showcase-copy">
+    <div class="visual-content">
 
       <span>GYM13</span>
 
@@ -286,33 +334,35 @@
 
 <!-- TRAINING -->
 
-<section class="section training" id="training">
+<section
+  class="section training"
+  id="training"
+>
 
-  <div class="training-header">
-
-    <div>
-
-      <div class="section-label reveal">
-        02 / TRAINING
-      </div>
-
-      <h2 class="reveal">
-        CHOOSE YOUR
-        <span>WAY TO GROW.</span>
-      </h2>
-
-    </div>
-
+  <div class="section-label reveal">
+    02 / TRAINING
   </div>
+
+  <h2 class="section-title reveal">
+    CHOOSE YOUR
+    <span>WAY TO GROW.</span>
+  </h2>
 
 
   <div class="training-grid">
 
+
     <article class="training-card reveal">
 
-      <span class="card-number">
-        01
-      </span>
+      <div class="card-top">
+
+        <span>01</span>
+
+        <div class="card-arrow">
+          ↗
+        </div>
+
+      </div>
 
       <div class="card-symbol">
         +
@@ -326,14 +376,10 @@
         </h3>
 
         <p>
-          Build muscle, strength and confidence
-          with focused resistance training.
+          Build strength, muscle and confidence
+          through focused training.
         </p>
 
-      </div>
-
-      <div class="card-arrow">
-        ↗
       </div>
 
     </article>
@@ -341,9 +387,15 @@
 
     <article class="training-card featured reveal">
 
-      <span class="card-number">
-        02
-      </span>
+      <div class="card-top">
+
+        <span>02</span>
+
+        <div class="card-arrow">
+          ↗
+        </div>
+
+      </div>
 
       <div class="card-symbol">
         ×
@@ -357,14 +409,10 @@
         </h3>
 
         <p>
-          Individual attention, clear goals
-          and measurable progress.
+          Individual attention,
+          clear goals and measurable results.
         </p>
 
-      </div>
-
-      <div class="card-arrow">
-        ↗
       </div>
 
     </article>
@@ -372,9 +420,15 @@
 
     <article class="training-card reveal">
 
-      <span class="card-number">
-        03
-      </span>
+      <div class="card-top">
+
+        <span>03</span>
+
+        <div class="card-arrow">
+          ↗
+        </div>
+
+      </div>
 
       <div class="card-symbol">
         ↗
@@ -388,17 +442,14 @@
         </h3>
 
         <p>
-          Improve mobility, endurance,
-          movement and athletic performance.
+          Improve mobility, endurance
+          and athletic performance.
         </p>
 
       </div>
 
-      <div class="card-arrow">
-        ↗
-      </div>
-
     </article>
+
 
   </div>
 
@@ -433,7 +484,10 @@
 
 <!-- CONTACT -->
 
-<section class="section contact" id="contact">
+<section
+  class="section contact"
+  id="contact"
+>
 
   <div class="contact-grid">
 
@@ -443,7 +497,7 @@
         03 / CONTACT
       </div>
 
-      <h2 class="reveal">
+      <h2 class="section-title reveal">
         READY TO
         <span>START?</span>
       </h2>
@@ -478,13 +532,13 @@
       GYM<span>13</span>
     </div>
 
-    <p>
+    <span>
       © 2026 GYM13
-    </p>
+    </span>
 
-    <p>
+    <span>
       Website concept
-    </p>
+    </span>
 
   </footer>
 

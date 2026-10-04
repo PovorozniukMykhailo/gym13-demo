@@ -1,32 +1,23 @@
+const header =
+  document.querySelector(".header");
+
 const cursorGlow =
   document.querySelector(".cursor-glow");
 
-const header =
-  document.querySelector(".header");
+const menuButton =
+  document.getElementById("menuButton");
+
+const mobileMenu =
+  document.getElementById("mobileMenu");
 
 const model =
   document.getElementById("gymModel");
 
+const fallbackLogo =
+  document.getElementById("fallbackLogo");
 
-
-// ==============================
-// CURSOR LIGHT
-// ==============================
-
-window.addEventListener(
-  "mousemove",
-  (event) => {
-
-    if (!cursorGlow) return;
-
-    cursorGlow.style.left =
-      `${event.clientX}px`;
-
-    cursorGlow.style.top =
-      `${event.clientY}px`;
-
-  }
-);
+const modelStage =
+  document.querySelector(".model-stage");
 
 
 
@@ -34,21 +25,131 @@ window.addEventListener(
 // HEADER
 // ==============================
 
+function updateHeader() {
+
+  if (window.scrollY > 40) {
+
+    header.classList.add("scrolled");
+
+  } else {
+
+    header.classList.remove("scrolled");
+
+  }
+
+}
+
+
 window.addEventListener(
   "scroll",
+  updateHeader,
+  {
+    passive: true
+  }
+);
+
+
+updateHeader();
+
+
+
+// ==============================
+// CURSOR GLOW
+// ==============================
+
+if (
+  cursorGlow &&
+  window.matchMedia("(pointer: fine)").matches
+) {
+
+  window.addEventListener(
+    "mousemove",
+    (event) => {
+
+      cursorGlow.style.left =
+        `${event.clientX}px`;
+
+      cursorGlow.style.top =
+        `${event.clientY}px`;
+
+    }
+  );
+
+}
+
+
+
+// ==============================
+// MOBILE MENU
+// ==============================
+
+function closeMobileMenu() {
+
+  menuButton.classList.remove("active");
+
+  mobileMenu.classList.remove("active");
+
+  document.body.classList.remove(
+    "menu-open"
+  );
+
+}
+
+
+function toggleMobileMenu() {
+
+  const opening =
+    !mobileMenu.classList.contains(
+      "active"
+    );
+
+
+  menuButton.classList.toggle(
+    "active",
+    opening
+  );
+
+
+  mobileMenu.classList.toggle(
+    "active",
+    opening
+  );
+
+
+  document.body.classList.toggle(
+    "menu-open",
+    opening
+  );
+
+}
+
+
+menuButton.addEventListener(
+  "click",
+  toggleMobileMenu
+);
+
+
+mobileMenu
+  .querySelectorAll("a")
+  .forEach((link) => {
+
+    link.addEventListener(
+      "click",
+      closeMobileMenu
+    );
+
+  });
+
+
+
+window.addEventListener(
+  "resize",
   () => {
 
-    if (window.scrollY > 40) {
+    if (window.innerWidth > 1000) {
 
-      header.classList.add(
-        "scrolled"
-      );
-
-    } else {
-
-      header.classList.remove(
-        "scrolled"
-      );
+      closeMobileMenu();
 
     }
 
@@ -58,13 +159,11 @@ window.addEventListener(
 
 
 // ==============================
-// REVEAL ANIMATION
+// SCROLL REVEAL
 // ==============================
 
 const revealItems =
-  document.querySelectorAll(
-    ".reveal"
-  );
+  document.querySelectorAll(".reveal");
 
 
 const observer =
@@ -83,6 +182,7 @@ const observer =
               .classList
               .add("visible");
 
+
             observer.unobserve(
               entry.target
             );
@@ -95,7 +195,10 @@ const observer =
     },
 
     {
-      threshold: 0.12
+      threshold: 0.10,
+
+      rootMargin:
+        "0px 0px -30px 0px"
     }
 
   );
@@ -119,76 +222,148 @@ document
   .querySelectorAll(
     'a[href^="#"]'
   )
-  .forEach(
-    (link) => {
+  .forEach((link) => {
 
-      link.addEventListener(
-        "click",
-        (event) => {
+    link.addEventListener(
+      "click",
+      (event) => {
 
-          const id =
-            link.getAttribute(
-              "href"
-            );
+        const targetId =
+          link.getAttribute("href");
 
 
-          if (
-            id === "#"
-          ) {
+        if (
+          !targetId ||
+          targetId === "#"
+        ) {
 
-            return;
-
-          }
-
-
-          const target =
-            document.querySelector(
-              id
-            );
-
-
-          if (!target) return;
-
-
-          event.preventDefault();
-
-
-          target.scrollIntoView({
-
-            behavior:
-              "smooth",
-
-            block:
-              "start"
-
-          });
+          return;
 
         }
+
+
+        const target =
+          document.querySelector(
+            targetId
+          );
+
+
+        if (!target) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        target.scrollIntoView({
+
+          behavior: "smooth",
+
+          block: "start"
+
+        });
+
+      }
+    );
+
+  });
+
+
+
+// ==============================
+// 3D MODEL
+// ==============================
+
+if (
+  model &&
+  fallbackLogo
+) {
+
+  // Default:
+  // show fallback until GLB actually loads
+
+  fallbackLogo.classList.remove(
+    "hidden"
+  );
+
+
+  model.addEventListener(
+    "load",
+    () => {
+
+      console.log(
+        "GYM13 3D model loaded"
+      );
+
+
+      model.classList.add(
+        "loaded"
+      );
+
+
+      fallbackLogo.classList.add(
+        "hidden"
       );
 
     }
   );
 
 
+  model.addEventListener(
+    "error",
+    () => {
+
+      console.warn(
+        "GLB model not found. Showing fallback logo."
+      );
+
+
+      model.classList.remove(
+        "loaded"
+      );
+
+
+      fallbackLogo.classList.remove(
+        "hidden"
+      );
+
+    }
+  );
+
+}
+
+
 
 // ==============================
-// MODEL MOUSE REACTION
+// 3D MOUSE REACTION
 // ==============================
 
-if (model) {
+if (
+  model &&
+  modelStage &&
+  window.matchMedia("(pointer: fine)").matches
+) {
 
-  const modelArea =
-    document.querySelector(
-      ".hero-model-area"
-    );
-
-
-  modelArea.addEventListener(
+  modelStage.addEventListener(
     "mousemove",
     (event) => {
 
+      if (
+        !model.classList.contains(
+          "loaded"
+        )
+      ) {
+
+        return;
+
+      }
+
+
       const rect =
-        modelArea
+        modelStage
           .getBoundingClientRect();
 
 
@@ -211,27 +386,27 @@ if (model) {
 
 
       const horizontal =
-        (x - 0.5) * 35;
+        (x - 0.5) * 25;
 
 
       const vertical =
-        72 +
-        (y - 0.5) * 14;
+        75 +
+        (y - 0.5) * 12;
 
 
       model.cameraOrbit =
-        `${horizontal}deg ${vertical}deg 105%`;
+        `${horizontal}deg ${vertical}deg 110%`;
 
     }
   );
 
 
-  modelArea.addEventListener(
+  modelStage.addEventListener(
     "mouseleave",
     () => {
 
       model.cameraOrbit =
-        "0deg 75deg 105%";
+        "0deg 75deg 110%";
 
     }
   );
@@ -241,75 +416,135 @@ if (model) {
 
 
 // ==============================
-// HERO PARALLAX
+// FALLBACK MOUSE EFFECT
 // ==============================
+
+if (
+  fallbackLogo &&
+  modelStage &&
+  window.matchMedia("(pointer: fine)").matches
+) {
+
+  modelStage.addEventListener(
+    "mousemove",
+    (event) => {
+
+      if (
+        fallbackLogo.classList.contains(
+          "hidden"
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      const rect =
+        modelStage
+          .getBoundingClientRect();
+
+
+      const x =
+        event.clientX -
+        rect.left;
+
+
+      const y =
+        event.clientY -
+        rect.top;
+
+
+      const rotateY =
+        (
+          x / rect.width -
+          .5
+        ) * 16;
+
+
+      const rotateX =
+        (
+          .5 -
+          y / rect.height
+        ) * 12;
+
+
+      fallbackLogo.style.transform =
+        `
+          rotateX(${rotateX}deg)
+          rotateY(${rotateY}deg)
+          translateZ(20px)
+        `;
+
+    }
+  );
+
+
+  modelStage.addEventListener(
+    "mouseleave",
+    () => {
+
+      fallbackLogo.style.transform = "";
+
+    }
+  );
+
+}
+
+
+
+// ==============================
+// LIGHT PARALLAX
+// ==============================
+
+let ticking = false;
+
 
 window.addEventListener(
   "scroll",
   () => {
 
-    const scroll =
-      window.scrollY;
+    if (
+      ticking ||
+      window.innerWidth <= 700
+    ) {
 
-
-    const modelArea =
-      document.querySelector(
-        ".hero-model-area"
-      );
-
-
-    const content =
-      document.querySelector(
-        ".hero-content"
-      );
-
-
-    if (modelArea) {
-
-      modelArea.style.transform =
-        `translateY(${scroll * 0.045}px)`;
+      return;
 
     }
 
 
-    if (content) {
+    ticking = true;
 
-      content.style.transform =
-        `translateY(${scroll * 0.018}px)`;
 
-    }
+    requestAnimationFrame(
+      () => {
 
+        const scroll =
+          window.scrollY;
+
+
+        const heroModel =
+          document.querySelector(
+            ".hero-model"
+          );
+
+
+        if (heroModel) {
+
+          heroModel.style.transform =
+            `translateY(${scroll * .035}px)`;
+
+        }
+
+
+        ticking = false;
+
+      }
+    );
+
+  },
+  {
+    passive: true
   }
 );
-
-
-
-// ==============================
-// MODEL LOADED
-// ==============================
-
-if (model) {
-
-  model.addEventListener(
-    "load",
-    () => {
-
-      model.style.opacity =
-        "1";
-
-    }
-  );
-
-
-  model.addEventListener(
-    "error",
-    () => {
-
-      console.error(
-        "GYM13 3D model could not be loaded."
-      );
-
-    }
-  );
-
-}
