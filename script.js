@@ -1,117 +1,96 @@
-const cursorGlow = document.querySelector(".cursor-glow");
-const header = document.querySelector(".header");
+const cursorGlow =
+  document.querySelector(".cursor-glow");
 
-const logoScene = document.getElementById("logoScene");
-const logoCard = document.getElementById("logoCard");
+const header =
+  document.querySelector(".header");
 
-
-// -----------------------------
-// CURSOR GLOW
-// -----------------------------
-
-window.addEventListener("mousemove", (event) => {
-
-  if (!cursorGlow) return;
-
-  cursorGlow.style.left = `${event.clientX}px`;
-  cursorGlow.style.top = `${event.clientY}px`;
-
-});
+const model =
+  document.getElementById("gymModel");
 
 
-// -----------------------------
-// HEADER SCROLL
-// -----------------------------
 
-window.addEventListener("scroll", () => {
+// ==============================
+// CURSOR LIGHT
+// ==============================
 
-  if (window.scrollY > 50) {
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
+window.addEventListener(
+  "mousemove",
+  (event) => {
+
+    if (!cursorGlow) return;
+
+    cursorGlow.style.left =
+      `${event.clientX}px`;
+
+    cursorGlow.style.top =
+      `${event.clientY}px`;
+
   }
-
-});
-
-
-// -----------------------------
-// LOGO 3D TILT
-// -----------------------------
-
-if (logoScene && logoCard) {
-
-  logoScene.addEventListener("mousemove", (event) => {
-
-    const rect = logoScene.getBoundingClientRect();
-
-    const mouseX =
-      event.clientX - rect.left;
-
-    const mouseY =
-      event.clientY - rect.top;
-
-    const centerX =
-      rect.width / 2;
-
-    const centerY =
-      rect.height / 2;
-
-    const rotateY =
-      ((mouseX - centerX) / centerX) * 12;
-
-    const rotateX =
-      ((centerY - mouseY) / centerY) * 12;
-
-    logoCard.style.transform = `
-      rotateX(${rotateX}deg)
-      rotateY(${rotateY}deg)
-      translateZ(30px)
-      scale(1.04)
-    `;
-
-  });
+);
 
 
-  logoScene.addEventListener("mouseleave", () => {
 
-    logoCard.style.transform = `
-      rotateX(0deg)
-      rotateY(0deg)
-      translateZ(0px)
-      scale(1)
-    `;
+// ==============================
+// HEADER
+// ==============================
 
-  });
+window.addEventListener(
+  "scroll",
+  () => {
 
-}
+    if (window.scrollY > 40) {
+
+      header.classList.add(
+        "scrolled"
+      );
+
+    } else {
+
+      header.classList.remove(
+        "scrolled"
+      );
+
+    }
+
+  }
+);
 
 
-// -----------------------------
-// SCROLL REVEAL
-// -----------------------------
 
-const revealElements =
-  document.querySelectorAll(".reveal");
+// ==============================
+// REVEAL ANIMATION
+// ==============================
+
+const revealItems =
+  document.querySelectorAll(
+    ".reveal"
+  );
 
 
-const revealObserver =
+const observer =
   new IntersectionObserver(
 
     (entries) => {
 
-      entries.forEach((entry) => {
+      entries.forEach(
+        (entry) => {
 
-        if (entry.isIntersecting) {
+          if (
+            entry.isIntersecting
+          ) {
 
-          entry.target.classList.add("visible");
-
-          revealObserver.unobserve(
             entry.target
-          );
+              .classList
+              .add("visible");
+
+            observer.unobserve(
+              entry.target
+            );
+
+          }
 
         }
-
-      });
+      );
 
     },
 
@@ -122,59 +101,215 @@ const revealObserver =
   );
 
 
-revealElements.forEach((element) => {
-  revealObserver.observe(element);
-});
+revealItems.forEach(
+  (item) => {
 
-
-// -----------------------------
-// PARALLAX
-// -----------------------------
-
-window.addEventListener("scroll", () => {
-
-  const scroll =
-    window.scrollY;
-
-  const visual =
-    document.querySelector(".hero-visual");
-
-  if (visual) {
-
-    visual.style.transform =
-      `translateY(${scroll * 0.07}px)`;
+    observer.observe(item);
 
   }
+);
 
-});
 
 
-// -----------------------------
-// SMOOTH NAVIGATION
-// -----------------------------
+// ==============================
+// SMOOTH LINKS
+// ==============================
 
 document
-  .querySelectorAll('a[href^="#"]')
-  .forEach((link) => {
+  .querySelectorAll(
+    'a[href^="#"]'
+  )
+  .forEach(
+    (link) => {
 
-    link.addEventListener(
-      "click",
-      (event) => {
+      link.addEventListener(
+        "click",
+        (event) => {
 
-        const target =
-          document.querySelector(
-            link.getAttribute("href")
-          );
+          const id =
+            link.getAttribute(
+              "href"
+            );
 
-        if (!target) return;
 
-        event.preventDefault();
+          if (
+            id === "#"
+          ) {
 
-        target.scrollIntoView({
-          behavior: "smooth"
-        });
+            return;
 
-      }
+          }
+
+
+          const target =
+            document.querySelector(
+              id
+            );
+
+
+          if (!target) return;
+
+
+          event.preventDefault();
+
+
+          target.scrollIntoView({
+
+            behavior:
+              "smooth",
+
+            block:
+              "start"
+
+          });
+
+        }
+      );
+
+    }
+  );
+
+
+
+// ==============================
+// MODEL MOUSE REACTION
+// ==============================
+
+if (model) {
+
+  const modelArea =
+    document.querySelector(
+      ".hero-model-area"
     );
 
-  });
+
+  modelArea.addEventListener(
+    "mousemove",
+    (event) => {
+
+      const rect =
+        modelArea
+          .getBoundingClientRect();
+
+
+      const x =
+        (
+          event.clientX -
+          rect.left
+        )
+        /
+        rect.width;
+
+
+      const y =
+        (
+          event.clientY -
+          rect.top
+        )
+        /
+        rect.height;
+
+
+      const horizontal =
+        (x - 0.5) * 35;
+
+
+      const vertical =
+        72 +
+        (y - 0.5) * 14;
+
+
+      model.cameraOrbit =
+        `${horizontal}deg ${vertical}deg 105%`;
+
+    }
+  );
+
+
+  modelArea.addEventListener(
+    "mouseleave",
+    () => {
+
+      model.cameraOrbit =
+        "0deg 75deg 105%";
+
+    }
+  );
+
+}
+
+
+
+// ==============================
+// HERO PARALLAX
+// ==============================
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    const scroll =
+      window.scrollY;
+
+
+    const modelArea =
+      document.querySelector(
+        ".hero-model-area"
+      );
+
+
+    const content =
+      document.querySelector(
+        ".hero-content"
+      );
+
+
+    if (modelArea) {
+
+      modelArea.style.transform =
+        `translateY(${scroll * 0.045}px)`;
+
+    }
+
+
+    if (content) {
+
+      content.style.transform =
+        `translateY(${scroll * 0.018}px)`;
+
+    }
+
+  }
+);
+
+
+
+// ==============================
+// MODEL LOADED
+// ==============================
+
+if (model) {
+
+  model.addEventListener(
+    "load",
+    () => {
+
+      model.style.opacity =
+        "1";
+
+    }
+  );
+
+
+  model.addEventListener(
+    "error",
+    () => {
+
+      console.error(
+        "GYM13 3D model could not be loaded."
+      );
+
+    }
+  );
+
+}
